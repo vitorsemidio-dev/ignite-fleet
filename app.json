@@ -11,15 +11,19 @@
       "resizeMode": "cover",
       "backgroundColor": "#202024"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.vitorsemidiodev.ignitefleet"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#202024"
-      }
+      },
+      "package": "com.vitorsemidiodev.ignitefleet"
     },
     "web": {
       "favicon": "./assets/favicon.png"
