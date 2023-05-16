@@ -6,10 +6,11 @@ import {
 import { AppProvider, UserProvider } from '@realm/react';
 import { StatusBar } from 'react-native';
 import { ThemeProvider } from 'styled-components';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { Loading } from '@components/Loading';
 import { REALM_APP_ID } from '@env';
-import { Home } from '@screens/Home';
+import { Routes } from '@routes/index';
 import SignIn from '@screens/SignIn';
 import theme from '@theme/index';
 
@@ -25,14 +26,16 @@ export default function App() {
   return (
     <AppProvider id={REALM_APP_ID}>
       <ThemeProvider theme={theme}>
-        <StatusBar
-          barStyle="light-content"
-          backgroundColor="transparent"
-          translucent
-        />
-        <UserProvider fallback={SignIn}>
-          <Home />
-        </UserProvider>
+        <SafeAreaProvider>
+          <StatusBar
+            barStyle="light-content"
+            backgroundColor="transparent"
+            translucent
+          />
+          <UserProvider fallback={SignIn}>
+            <Routes />
+          </UserProvider>
+        </SafeAreaProvider>
       </ThemeProvider>
     </AppProvider>
   );
