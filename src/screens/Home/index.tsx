@@ -26,8 +26,14 @@ export function Home() {
     const vehicles = historic.filtered("status = 'departure'");
     if (vehicles?.length > 0) {
       setVehicleInUse(vehicles[0]);
+    } else {
+      setVehicleInUse(null);
     }
   }
+
+  useEffect(() => {
+    fetchVehicleInUse();
+  }, []);
 
   useEffect(() => {
     realm.addListener('change', () => fetchVehicleInUse());
