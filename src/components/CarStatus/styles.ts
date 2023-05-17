@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 
-export const Container = styled.View`
+export const Container = styled.TouchableOpacity`
   width: 100%;
   margin: 32px 0;
   padding: 22px;
@@ -26,7 +26,8 @@ export const Message = styled.Text`
   font-family: ${({ theme }) => theme.FONT_FAMILY.REGULAR};
   flex: 1;
   text-align: justify;
-  textalignvertical: center;
+  /* prettier-ignore */
+  textAlignVertical: center;
 `;
 
 export const TextHighlight = styled.Text`
