@@ -29,7 +29,7 @@ export function Arrival() {
 
   const { id } = route.params as RouteParamProps;
 
-  const history = useObject(Historic, new BSON.UUID(id));
+  const historic = useObject(Historic, new BSON.UUID(id));
 
   function handleCancelVehicleUsage() {
     Alert.alert('Cancelar', 'Deseja realmente cancelar o uso do veículo?', [
@@ -46,8 +46,9 @@ export function Arrival() {
 
   function cancelVehicleUsage() {
     realm.write(() => {
-      realm.delete(history);
+      realm.delete(historic);
     });
+
     goBack();
   }
 
@@ -57,11 +58,11 @@ export function Arrival() {
       <Content>
         <Label>Placa do veículo</Label>
 
-        <LicensePlate>{history?.license_plate}</LicensePlate>
+        <LicensePlate>{historic?.license_plate}</LicensePlate>
 
         <Label>Finalidade</Label>
 
-        <Description>{history?.description}</Description>
+        <Description>{historic?.description}</Description>
 
         <Footer>
           <ButtonIcon icon={X} onPress={handleCancelVehicleUsage} />

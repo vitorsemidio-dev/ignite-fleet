@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import { CarStatus } from '@components/CarStatus';
 import { HomeHeader } from '@components/HomeHeader';
-import { useQuery } from '@libs/realm';
+import { useQuery, useRealm } from '@libs/realm';
 import { Historic } from '@libs/realm/schemas/Historic';
 
 import { Container, Content } from './styles';
@@ -12,6 +12,7 @@ export function Home() {
   const [vehicleInuse, setVehicleInUse] = useState<Historic | null>(null);
 
   const { navigate } = useNavigation();
+  const realm = useRealm();
   const historic = useQuery(Historic);
 
   function handleRegisterMovement() {
@@ -21,15 +22,17 @@ export function Home() {
     navigate('departure');
   }
 
-  function fetchVehicle() {
+  function fetchVehicleInUse() {
     const vehicles = historic.filtered("status = 'departure'");
-    if (vehicles.length > 0) {
+    if (vehicles?.length > 0) {
       setVehicleInUse(vehicles[0]);
     }
   }
 
   useEffect(() => {
-    fetchVehicle();
+    realm.addListener('change', () => fetchVehicleInUse());
+
+    return () => realm.removeListener('change', fetchVehicleInUse);
   }, []);
 
   return (
