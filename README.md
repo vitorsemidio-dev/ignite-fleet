@@ -9,6 +9,10 @@
 
 <img src="https://img.shields.io/static/v1?logo=Expo&logoColor=000020&label=Expo&message=Expo&color=000020" alt="Logo Expo cor correta com hex #000020" />
 
+<img src="https://img.shields.io/static/v1?logo=Realm&logoColor=39477F&label=Realm&message=Realm&color=39477F" alt="Logo Realm cor correta com hex #39477F" />
+
+<img src="https://img.shields.io/static/v1?logo=styled-components&logoColor=DB7093&label=StyledComponents&message=Styled Components&color=DB7093" alt="Logo Styled Components cor correta com hex #DB7093" />
+
 <img src="https://img.shields.io/static/v1?logo=TypeScript&logoColor=3178C6&label=TypeScript&message=TypeScript&color=3178C6" alt="Logo TypeScript cor correta com hex #3178C6" />
 </p>
 
@@ -48,13 +52,15 @@ O **Ignite Fleet** é uma ferramenta indispensável para empresas que desejam ot
 
 ### 🚨 Requisitos
 
-**Instalação aplicativo do Expo no smartphone**
+**Emulador Android ou iOS**
 
-- [Expo Android](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=pt_BR&gl=US) ou [Expo iOS](https://apps.apple.com/us/app/expo-go/id982107779)
+- Deve possuir emulador Android ou iOS instalado na máquina.
 
 **Clone este repositório**
 
-**Acesse a pasta**
+```
+git clone https://github.com/vitorsemidio-dev/ignite-fleet.git
+```
 
 **Instale as dependências e inicie o projeto**
 
@@ -66,11 +72,9 @@ npm install
 npx expo start
 ```
 
-**Abra o projeto no dispositivo**
+**Abra o projeto no emulador**
 
-Abra o aplicativo do Expo no smartphone, aponte a câmera para o QRCode que apareceu no terminal após executar o comando `npx expo start`.
-
-**Importante**: _O dispositivo móvel e o computador precisam estar na mesma rede_
+Aperte `a` para abrir o projeto no emulador Android ou `i` para abrir no emulador iOS.
 
 <img src=".github/npx-expo-start.png"/>
 
@@ -79,6 +83,10 @@ Abra o aplicativo do Expo no smartphone, aponte a câmera para o QRCode que apar
 Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 - [Expo](https://expo.dev/)
+- [React Native](https://reactnative.dev/)
+- [React Navigation](https://reactnavigation.org/)
+- [Realm](https://realm.io/)
+- [Styled Components](https://styled-components.com/)
 - [TypeScript](https://www.typescriptlang.org/pt/)
 
 ## 🔖 Layout
