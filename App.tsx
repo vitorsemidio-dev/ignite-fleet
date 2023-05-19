@@ -1,4 +1,6 @@
 import 'react-native-get-random-values';
+import '@libs/dayjs';
+
 import {
   Roboto_400Regular,
   Roboto_700Bold,
