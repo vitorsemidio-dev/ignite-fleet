@@ -7,6 +7,10 @@ import { Alert, FlatList } from 'react-native';
 import { CarStatus } from '@components/CarStatus';
 import { HistoricCard, HistoricCardProps } from '@components/HistoricCard';
 import { HomeHeader } from '@components/HomeHeader';
+import {
+  getLastAsyncTimestamp,
+  saveLastSyncTimestamp,
+} from '@libs/asyncStorage/syncStorage';
 import { useQuery, useRealm } from '@libs/realm';
 import { Historic } from '@libs/realm/schemas/Historic';
 
@@ -39,8 +43,9 @@ export function Home() {
     }
   }
 
-  function fetchHistoric() {
+  async function fetchHistoric() {
     try {
+      const lastSync = await getLastAsyncTimestamp();
       const response = historic.filtered(
         "status='arrival' SORT(created_at DESC)",
       );
@@ -48,7 +53,7 @@ export function Home() {
         return {
           id: item._id.toString(),
           licensePlate: item.license_plate,
-          isSync: false,
+          isSync: lastSync > item.updated_at!.getTime(),
           created: dayjs(item.created_at).format(
             '[Saída em] DD/MM/YYYY [às] HH:mm',
           ),
@@ -65,14 +70,21 @@ export function Home() {
     navigate('arrival', { id });
   }
 
-  function progressNotification(transferred: number, transferable: number) {
+  async function progressNotification(
+    transferred: number,
+    transferable: number,
+  ) {
+    const PERCENTAGE_COMPLETE_VALUE = 1;
     const percentageValue = transferred / transferable;
     const percentage = percentageValue.toLocaleString('pt-BR', {
       style: 'percent',
       minimumFractionDigits: 0,
     });
 
-    console.log('TRANSFERIDO => ', `${percentage}`);
+    if (percentageValue === PERCENTAGE_COMPLETE_VALUE) {
+      await saveLastSyncTimestamp();
+      await fetchHistoric();
+    }
   }
 
   useEffect(() => {
