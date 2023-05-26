@@ -3,6 +3,7 @@ import { useUser } from '@realm/react';
 import dayjs from 'dayjs';
 import React, { useEffect, useState } from 'react';
 import { Alert, FlatList } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 import { CarStatus } from '@components/CarStatus';
 import { HistoricCard, HistoricCardProps } from '@components/HistoricCard';
@@ -84,6 +85,10 @@ export function Home() {
     if (percentageValue === PERCENTAGE_COMPLETE_VALUE) {
       await saveLastSyncTimestamp();
       await fetchHistoric();
+      Toast.show({
+        type: 'info',
+        text1: 'Todos os dados estão sincronizado.',
+      });
     }
   }
 
