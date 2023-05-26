@@ -1,5 +1,5 @@
-import 'react-native-get-random-values';
 import '@libs/dayjs';
+import 'react-native-get-random-values';
 
 import {
   Roboto_400Regular,
@@ -16,7 +16,7 @@ import { REALM_APP_ID } from '@env';
 import { Routes } from '@routes/index';
 import SignIn from '@screens/SignIn';
 import theme from '@theme/index';
-import { RealmProvider } from './src/libs/realm';
+import { RealmProvider, syncConfig } from './src/libs/realm';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -37,7 +37,7 @@ export default function App() {
             translucent
           />
           <UserProvider fallback={SignIn}>
-            <RealmProvider>
+            <RealmProvider sync={syncConfig} fallback={Loading}>
               <Routes />
             </RealmProvider>
           </UserProvider>
