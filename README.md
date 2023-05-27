@@ -68,8 +68,16 @@ git clone https://github.com/vitorsemidio-dev/ignite-fleet.git
 npm install
 ```
 
+**Para iniciar o projeto no Android pela primeira vez**
+
 ```bash
-npx expo start
+npx expo run:android
+```
+
+**Para iniciar o projeto no iOS pela primeira vez**
+
+```bash
+npx expo run:ios
 ```
 
 **Abra o projeto no emulador**
