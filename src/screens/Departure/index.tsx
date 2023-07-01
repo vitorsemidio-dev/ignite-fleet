@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { useUser } from '@realm/react';
-import { useRef, useState } from 'react';
+import { useForegroundPermissions } from 'expo-location';
+import { useEffect, useRef, useState } from 'react';
 import { Alert, ScrollView, TextInput } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -12,12 +13,14 @@ import { useRealm } from '@libs/realm';
 import { Historic } from '@libs/realm/schemas/Historic';
 import { licensePlateValidate } from '@utils/licensePlateValidate';
 
-import { Container, Content } from './styles';
+import { Container, Content, Message } from './styles';
 
 export function Departure() {
   const [description, setDescription] = useState('');
   const [licensePlate, setLicensePlate] = useState('');
   const [isRegistering, setIsRegistering] = useState(false);
+  const [locationForegroundPermissions, requestLocationForegroundPermissions] =
+    useForegroundPermissions();
 
   const realm = useRealm();
   const user = useUser();
@@ -65,6 +68,24 @@ export function Departure() {
       Alert.alert('Erro', 'Não possível registrar a saída do veículo.');
       setIsRegistering(false);
     }
+  }
+
+  useEffect(() => {
+    requestLocationForegroundPermissions();
+  }, []);
+
+  if (!locationForegroundPermissions?.granted) {
+    return (
+      <Container>
+        <Header title="Saída" />
+        <Message>
+          Para acessar essa funcionalidade, é necessário permitir que o
+          aplicativo tenha acesso à sua localização. Por favor, vá até as
+          configurações do seu dispositivo e conceda a permissão de localização
+          ao aplicativo.
+        </Message>
+      </Container>
+    );
   }
 
   return (
