@@ -1,6 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import { useUser } from '@realm/react';
-import { useForegroundPermissions } from 'expo-location';
+import {
+  LocationAccuracy,
+  LocationSubscription,
+  useForegroundPermissions,
+  watchPositionAsync,
+} from 'expo-location';
 import { useEffect, useRef, useState } from 'react';
 import { Alert, ScrollView, TextInput } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -13,11 +18,14 @@ import { useRealm } from '@libs/realm';
 import { Historic } from '@libs/realm/schemas/Historic';
 import { licensePlateValidate } from '@utils/licensePlateValidate';
 
+import { Loading } from '@components/Loading';
+import { getAddressLocation } from '@utils/getAddressLocation';
 import { Container, Content, Message } from './styles';
 
 export function Departure() {
   const [description, setDescription] = useState('');
   const [licensePlate, setLicensePlate] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const [isRegistering, setIsRegistering] = useState(false);
   const [locationForegroundPermissions, requestLocationForegroundPermissions] =
     useForegroundPermissions();
@@ -74,6 +82,38 @@ export function Departure() {
     requestLocationForegroundPermissions();
   }, []);
 
+  useEffect(() => {
+    if (!locationForegroundPermissions?.granted) {
+      return () => {};
+    }
+    let sub: LocationSubscription;
+
+    watchPositionAsync(
+      {
+        accuracy: LocationAccuracy.High,
+        timeInterval: 1000,
+      },
+      (location) => {
+        getAddressLocation({
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        })
+          .then((address) => {
+            console.log(address);
+          })
+          .finally(() => {
+            setIsLoading(false);
+          });
+      },
+    ).then((response) => {
+      sub = response;
+    });
+
+    return () => {
+      sub?.remove();
+    };
+  }, [locationForegroundPermissions]);
+
   if (!locationForegroundPermissions?.granted) {
     return (
       <Container>
@@ -86,6 +126,10 @@ export function Departure() {
         </Message>
       </Container>
     );
+  }
+
+  if (isLoading) {
+    return <Loading />;
   }
 
   return (
