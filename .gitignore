@@ -18,3 +18,10 @@ web-build/
 
 # Environment variables
 .env
+
+# Temp
+temp/
+
+# Build
+android/
+ios/
