@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useUser } from '@realm/react';
 import {
   LocationAccuracy,
+  LocationObjectCoords,
   LocationSubscription,
   useForegroundPermissions,
   watchPositionAsync,
@@ -20,6 +21,7 @@ import { licensePlateValidate } from '@utils/licensePlateValidate';
 
 import { Loading } from '@components/Loading';
 import { LocationInfo } from '@components/LocationInfo';
+import { Map } from '@components/Map';
 import { getAddressLocation } from '@utils/getAddressLocation';
 import { Car } from 'phosphor-react-native';
 import { Container, Content, Message } from './styles';
@@ -28,10 +30,12 @@ export function Departure() {
   const [currentAddressStreet, setCurrentAddressStreet] = useState<
     string | null
   >(null);
+  const [currentCoords, setCurrentCoords] =
+    useState<LocationObjectCoords | null>(null);
   const [description, setDescription] = useState('');
-  const [licensePlate, setLicensePlate] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isRegistering, setIsRegistering] = useState(false);
+  const [licensePlate, setLicensePlate] = useState('');
   const [locationForegroundPermissions, requestLocationForegroundPermissions] =
     useForegroundPermissions();
 
@@ -104,6 +108,7 @@ export function Departure() {
           longitude: location.coords.longitude,
         })
           .then((address) => {
+            setCurrentCoords(location.coords);
             const addressStreet = address?.street ?? null;
             setCurrentAddressStreet(addressStreet);
           })
@@ -144,6 +149,7 @@ export function Departure() {
 
       <KeyboardAwareScrollView extraHeight={100}>
         <ScrollView>
+          {currentCoords && <Map coordinates={[currentCoords]} />}
           <Content>
             {currentAddressStreet && (
               <LocationInfo
