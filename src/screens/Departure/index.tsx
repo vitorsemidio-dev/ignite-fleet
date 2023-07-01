@@ -19,10 +19,15 @@ import { Historic } from '@libs/realm/schemas/Historic';
 import { licensePlateValidate } from '@utils/licensePlateValidate';
 
 import { Loading } from '@components/Loading';
+import { LocationInfo } from '@components/LocationInfo';
 import { getAddressLocation } from '@utils/getAddressLocation';
+import { Car } from 'phosphor-react-native';
 import { Container, Content, Message } from './styles';
 
 export function Departure() {
+  const [currentAddressStreet, setCurrentAddressStreet] = useState<
+    string | null
+  >(null);
   const [description, setDescription] = useState('');
   const [licensePlate, setLicensePlate] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -99,7 +104,8 @@ export function Departure() {
           longitude: location.coords.longitude,
         })
           .then((address) => {
-            console.log(address);
+            const addressStreet = address?.street ?? null;
+            setCurrentAddressStreet(addressStreet);
           })
           .finally(() => {
             setIsLoading(false);
@@ -139,6 +145,14 @@ export function Departure() {
       <KeyboardAwareScrollView extraHeight={100}>
         <ScrollView>
           <Content>
+            {currentAddressStreet && (
+              <LocationInfo
+                icon={Car}
+                label="Localização atual"
+                description={currentAddressStreet}
+              />
+            )}
+
             <LicensePlateInput
               ref={licensePlateRef}
               label="Placa do veículo"
