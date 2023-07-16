@@ -10,6 +10,7 @@ import { Header } from '@components/Header';
 import { getLastAsyncTimestamp } from '@libs/asyncStorage/syncStorage';
 import { useObject, useRealm } from '@libs/realm';
 import { Historic } from '@libs/realm/schemas/Historic';
+import { stopLocationTask } from '../../tasks/backgroundLocationTask';
 
 import {
   AsyncMessage,
@@ -57,9 +58,9 @@ export function Arrival() {
     goBack();
   }
 
-  function handleArrivalRegister() {
+  async function handleArrivalRegister() {
     try {
-      realm.write(() => {
+      await realm.write(async () => {
         if (!historic) {
           return Alert.alert(
             'Error',
@@ -68,6 +69,7 @@ export function Arrival() {
         }
         historic.status = 'arrival';
         historic.updated_at = new Date();
+        await stopLocationTask();
         Alert.alert('Chegada', 'Chegada do veículo registrada com sucesso.');
         goBack();
       });

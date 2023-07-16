@@ -19,6 +19,7 @@ import { TextAreaInput } from '@components/TextInput';
 import { useRealm } from '@libs/realm';
 import { Historic } from '@libs/realm/schemas/Historic';
 import { licensePlateValidate } from '@utils/licensePlateValidate';
+import { startLocationTask } from '../../tasks/backgroundLocationTask';
 
 import { Loading } from '@components/Loading';
 import { LocationInfo } from '@components/LocationInfo';
@@ -82,6 +83,8 @@ export function Departure() {
           'Para registrar a saída do veículo, é necessário conceder a permissão de localização em segundo plano.',
         );
       }
+
+      await startLocationTask();
 
       realm.write(() => {
         realm.create(
