@@ -18,8 +18,8 @@ import { LicensePlateInput } from '@components/LicensePlateInput';
 import { TextAreaInput } from '@components/TextInput';
 import { useRealm } from '@libs/realm';
 import { Historic } from '@libs/realm/schemas/Historic';
+import { startLocationTask } from '@tasks/backgroundLocationTask';
 import { licensePlateValidate } from '@utils/licensePlateValidate';
-import { startLocationTask } from '../../tasks/backgroundLocationTask';
 
 import { Loading } from '@components/Loading';
 import { LocationInfo } from '@components/LocationInfo';

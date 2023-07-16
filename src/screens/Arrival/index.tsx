@@ -10,7 +10,7 @@ import { Header } from '@components/Header';
 import { getLastAsyncTimestamp } from '@libs/asyncStorage/syncStorage';
 import { useObject, useRealm } from '@libs/realm';
 import { Historic } from '@libs/realm/schemas/Historic';
-import { stopLocationTask } from '../../tasks/backgroundLocationTask';
+import { stopLocationTask } from '@tasks/backgroundLocationTask';
 
 import {
   AsyncMessage,
