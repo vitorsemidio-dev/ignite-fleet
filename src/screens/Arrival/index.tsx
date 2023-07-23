@@ -54,29 +54,30 @@ export function Arrival() {
     ]);
   }
 
-  function cancelVehicleUsage() {
+  async function cancelVehicleUsage() {
     realm.write(() => {
       realm.delete(historic);
     });
+    await stopLocationTask();
 
     goBack();
   }
 
   async function handleArrivalRegister() {
     try {
-      await realm.write(async () => {
-        if (!historic) {
-          return Alert.alert(
-            'Error',
-            'Não foi possível obter os dados para registrar a chegada',
-          );
-        }
+      if (!historic) {
+        return Alert.alert(
+          'Error',
+          'Não foi possível obter os dados para registrar a chegada',
+        );
+      }
+      realm.write(() => {
         historic.status = 'arrival';
         historic.updated_at = new Date();
-        await stopLocationTask();
-        Alert.alert('Chegada', 'Chegada do veículo registrada com sucesso.');
-        goBack();
       });
+      await stopLocationTask();
+      Alert.alert('Chegada', 'Chegada do veículo registrada com sucesso.');
+      goBack();
     } catch (error) {
       console.log(error);
       Alert.alert('Error', 'Não foi possível registrar a chegada do veículo.');
